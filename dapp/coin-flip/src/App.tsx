@@ -1,26 +1,31 @@
-import { ConnectButton } from "@mysten/dapp-kit";
-import { Box, Container, Flex, Heading } from "@radix-ui/themes";
+import { Container, Flex, Heading } from "@radix-ui/themes";
+import { BlendingModeIcon } from "@radix-ui/react-icons";
+import { SettingDropdownMenu } from "./components/SettingDropdownMenu";
+import { ConnectButton } from "./components/ConnectButton";
 import { WalletStatus } from "./WalletStatus";
 
-function App() {
+const App = () => {
   return (
     <>
       <Flex
         position="sticky"
         px="4"
-        py="2"
+        py="4"
         justify="between"
         style={{
           borderBottom: "1px solid var(--gray-a2)",
+          backgroundColor: "#252e3ef2",
         }}
       >
-        <Box>
-          <Heading>dApp Starter Template</Heading>
-        </Box>
+        <Flex align="center" justify="center" gapX="2">
+          <BlendingModeIcon width="36" height="36" color="var(--accent-10)" />
+          <Heading>Coin flip Game</Heading>
+        </Flex>
 
-        <Box>
+        <Flex height="8" gapX="2">
+          <SettingDropdownMenu />
           <ConnectButton />
-        </Box>
+        </Flex>
       </Flex>
       <Container>
         <Container
@@ -34,6 +39,6 @@ function App() {
       </Container>
     </>
   );
-}
+};
 
 export default App;

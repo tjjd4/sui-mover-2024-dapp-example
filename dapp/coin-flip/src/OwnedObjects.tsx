@@ -1,7 +1,7 @@
 import { useCurrentAccount, useSuiClientQuery } from "@mysten/dapp-kit";
 import { Flex, Heading, Text } from "@radix-ui/themes";
 
-export function OwnedObjects() {
+export const OwnedObjects = () => {
   const account = useCurrentAccount();
   const { data, isPending, error } = useSuiClientQuery(
     "getOwnedObjects",
@@ -39,4 +39,4 @@ export function OwnedObjects() {
       ))}
     </Flex>
   );
-}
+};

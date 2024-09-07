@@ -2,7 +2,7 @@ import { useCurrentAccount } from "@mysten/dapp-kit";
 import { Container, Flex, Heading, Text } from "@radix-ui/themes";
 import { OwnedObjects } from "./OwnedObjects";
 
-export function WalletStatus() {
+export const WalletStatus = () => {
   const account = useCurrentAccount();
 
   return (
@@ -20,4 +20,4 @@ export function WalletStatus() {
       <OwnedObjects />
     </Container>
   );
-}
+};

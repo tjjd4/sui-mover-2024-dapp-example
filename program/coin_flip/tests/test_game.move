@@ -3,7 +3,7 @@ module coin_flip::test_game {
     use sui::test_scenario;
     use sui::sui::SUI;
     use sui::coin::{Self, Coin};
-    use coin_flip::counter::{Self, Counter};
+    use coin_flip::ticket::{Self, Ticket};
     use coin_flip::house_data::{Self, HouseData, HouseCap};
     use coin_flip::game::{ Self };
 
@@ -23,7 +23,7 @@ module coin_flip::test_game {
         75, 146, 197, 214,  70, 164, 176, 221,  55,
         218,  63, 198
     ];
-    // Signed counter id 0x... + starting count = 0000000000000000 (represented as u64) with house's private key.
+    // Signed ticket id 0x... + starting count = 0000000000000000 (represented as u64) with house's private key.
     const BLS_SIG: vector<u8> = vector<u8>[
         136, 154,   7, 173,  12,  37,  13,  33, 154,  16, 189, 218,
         133,  39, 103,  67, 231, 161, 180, 182,  59, 227, 242, 213,
@@ -81,8 +81,7 @@ module coin_flip::test_game {
         scenario.next_tx(PLAYER);
         {
             let ctx = scenario.ctx();
-            let counter = counter::mint(ctx);
-            counter.transfer_to_sender(ctx);
+            ticket::mint(ctx);
         };
 
         // Start a game.
@@ -119,7 +118,7 @@ module coin_flip::test_game {
         scenario.next_tx(PLAYER);
         {
             let mut house_data = scenario.take_shared<HouseData>();
-            let mut player_counter = scenario.take_from_sender<Counter>();
+            let mut player_counter = scenario.take_from_sender<Ticket>();
             let ctx = scenario.ctx();
             game::start_guess(
                 &mut house_data,
@@ -277,8 +276,7 @@ module coin_flip::test_game {
         scenario.next_tx(PLAYER);
         {
             let ctx = scenario.ctx();
-            let counter = counter::mint(ctx);
-            counter.transfer_to_sender(ctx);
+            ticket::mint(ctx);
         };
 
         // Start a game.
@@ -315,7 +313,7 @@ module coin_flip::test_game {
         scenario.next_tx(PLAYER);
         {
             let mut house_data = scenario.take_shared<HouseData>();
-            let mut player_counter = scenario.take_from_sender<Counter>();
+            let mut player_counter = scenario.take_from_sender<Ticket>();
             let ctx = scenario.ctx();
             game::start_guess(
                 &mut house_data,

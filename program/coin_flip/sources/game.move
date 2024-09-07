@@ -7,7 +7,7 @@ module coin_flip::game {
     use sui::bls12381::bls12381_min_pk_verify;
     use sui::hash::blake2b256;
 
-    use coin_flip::counter::Counter;
+    use coin_flip::ticket::Ticket;
     use coin_flip::house_data::HouseData;
 
     // Consts
@@ -64,7 +64,7 @@ module coin_flip::game {
         id
     }
 
-    public fun start_guess(house_data: &mut HouseData, counter: &mut Counter, game_id: ID, guess: bool, ctx: &mut TxContext) {
+    public fun start_guess(house_data: &mut HouseData, ticket: &mut Ticket, game_id: ID, guess: bool, ctx: &mut TxContext) {
         // Get a mutable reference to the game object.
         let game_mut_ref = borrow_mut( house_data, game_id);
 
@@ -74,7 +74,7 @@ module coin_flip::game {
         // Ensure that the game is in a valid state.
         assert!(status(game_mut_ref) == FUNDS_SUBMITTED_STATE, EGameInvalidState);
 
-         let vrf_input = counter.get_vrf_input_and_increment();
+         let vrf_input = ticket.get_vrf_input_and_increment();
         game_mut_ref.guess.fill(guess);
         game_mut_ref.vrf_input.fill( vrf_input);
         game_mut_ref.guess_epoch.fill(ctx.epoch());

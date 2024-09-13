@@ -7,6 +7,7 @@ import App from "./App.tsx";
 import { AppProvider } from "./AppProvider";
 import "@mysten/dapp-kit/dist/index.css";
 import "@radix-ui/themes/styles.css";
+import "react-toastify/dist/ReactToastify.css";
 import "./main.css";
 
 const queryClient = new QueryClient();

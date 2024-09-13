@@ -3,6 +3,7 @@ import {
   normalizeStructTag,
   isValidSuiAddress,
 } from "@mysten/sui/utils";
+import { toast, type ToastContent, type ToastOptions } from "react-toastify";
 import type { StateStorage } from "zustand/middleware";
 
 const ELLIPSIS = "\u{2026}";
@@ -38,4 +39,27 @@ export const createInMemoryStore = (): StateStorage => {
       store.delete(key);
     },
   };
+};
+
+export const sleep = (timeout: number): Promise<void> => {
+  return new Promise((resolve, _reject) => {
+    setTimeout(resolve, timeout);
+  });
+};
+
+export const notify = <T>(
+  content: ToastContent<T>,
+  options: ToastOptions<T>,
+) => {
+  toast(content, {
+    style: {
+      backgroundColor: "#1E232C",
+      color: "white",
+      fontWeight: "bold",
+      border: "1px solid var(--blue-10)",
+      padding: "5px",
+      borderRadius: "10px",
+    },
+    ...options,
+  });
 };

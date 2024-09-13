@@ -5,7 +5,10 @@
     "build": "ts-node scripts/build.ts",
     "publish": "ts-node scripts/publish.ts",
     "upgrade": "ts-node scripts/upgrade.ts",
-    "house-init": "ts-node scripts/house-init.ts"
+    "house-init": "ts-node scripts/house-init.ts",
+    "house-topup": "ts-node scripts/house-topup.ts",
+    "house-withdraw": "ts-node scripts/house-withdraw.ts",
+    "house-claim": "ts-node scripts/house-claim.ts"
   },
   "dependencies": {
     "@iarna/toml": "^2.2.5",

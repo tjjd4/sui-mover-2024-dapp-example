@@ -45,11 +45,18 @@ module coin_flip::game {
     /// Emitted when a new game has started.
     public struct StartGameEvent has copy, drop {
         game_id: ID,
+        status: u8
+    }
+
+    /// Emitted when a guess has started.
+    public struct StartGuessEvent has copy, drop {
+        game_id: ID,
         player: address,
         player_stake: u64,
         guess: bool,
         vrf_input: vector<u8>,
-        fee_bp: u16
+        fee_bp: u16,
+        status: u8
     }
 
     /// Emitted when a game has finished.
@@ -62,6 +69,11 @@ module coin_flip::game {
         let (id, new_game) = create_game(house_data, ticket, coin, ctx);
 
         dynamic_object_field::add(house_data.borrow_mut(), id, new_game);
+
+        emit(StartGameEvent {
+            game_id: id,
+            status: FUNDS_SUBMITTED_STATE,
+        });
         id
     }
 
@@ -85,13 +97,14 @@ module coin_flip::game {
 
         game_mut_ref.status = GUESS_SUBMITTED_STATE;
 
-        emit(StartGameEvent {
+        emit(StartGuessEvent {
             game_id,
             player: player(game_mut_ref),
             player_stake: total_stake(game_mut_ref) / (GAME_RETURN as u64),
             guess,
             vrf_input: vrf_input,
-            fee_bp: fee_in_bp(game_mut_ref)
+            fee_bp: fee_in_bp(game_mut_ref),
+            status: GUESS_SUBMITTED_STATE,
         });
     }
 
@@ -118,6 +131,7 @@ module coin_flip::game {
         // Step 3: Distribute funds based on result.
         let game_mut_ref = borrow_mut(house_data, game_id);
         let status = if (player_won) {
+            game_mut_ref.status = PLAYER_WON_STATE;
             // Calculate the fee
             let total_stake_amount = total_stake(game_mut_ref);
             let fee_amount = fee_amount(total_stake_amount, game_mut_ref.fee_bp);
@@ -134,6 +148,7 @@ module coin_flip::game {
 
             PLAYER_WON_STATE
         } else {
+            game_mut_ref.status = HOUSE_WON_STATE;
             // No fees are taken.
             let total_stake_amount = total_stake(game_mut_ref);
             let total_stake_mut_ref = game_mut_ref.borrow_total_stake_mut();
@@ -187,7 +202,6 @@ module coin_flip::game {
             status: CHALLENGED_STATE,
         });
     }
-
 
     // --------------- HouseData Mutations ---------------
 

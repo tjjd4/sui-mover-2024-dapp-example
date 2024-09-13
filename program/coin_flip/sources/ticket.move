@@ -23,7 +23,7 @@ module coin_flip::ticket {
     }
 
     /// Creates a new ticket object.
-    public fun mint(ctx: &mut TxContext) {
+    entry fun mint(ctx: &mut TxContext) {
         let ticket = Ticket {
             id: object::new(ctx),
             count: 0,

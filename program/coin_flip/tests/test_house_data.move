@@ -262,16 +262,19 @@ module coin_flip::test_house_data {
         // Start a game.
         scenario.next_tx(PLAYER);
         let mut player_coin = scenario.take_from_sender<Coin<SUI>>();
+        let player_ticket = scenario.take_from_sender<Ticket>();
         let mut house_data = scenario.take_shared<HouseData>();
         let ctx = scenario.ctx();
         let player_stake_coin = player_coin.split(MIN_STAKE_BALANCE, ctx);
         let game_id = game::start_game(
             &mut house_data,
+            &player_ticket,
             player_stake_coin,
             ctx
         );
 
         scenario.return_to_sender(player_coin);
+        scenario.return_to_sender(player_ticket);
         test_scenario::return_shared(house_data);
 
         // Start a guess.

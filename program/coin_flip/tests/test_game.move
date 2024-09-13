@@ -87,11 +87,13 @@ module coin_flip::test_game {
         // Start a game.
         scenario.next_tx(PLAYER);
         let mut player_coin = scenario.take_from_sender<Coin<SUI>>();
+        let player_ticket = scenario.take_from_sender<Ticket>();
         let mut house_data = scenario.take_shared<HouseData>();
         let ctx = scenario.ctx();
         let player_stake_coin = player_coin.split(MIN_STAKE_BALANCE, ctx);
         let game_id = game::start_game(
             &mut house_data,
+            &player_ticket,
             player_stake_coin,
             ctx
         );
@@ -100,6 +102,7 @@ module coin_flip::test_game {
         // debug::print(&b"House balance: ".to_string());
         // debug::print(&house_data.balance());
         scenario.return_to_sender(player_coin);
+        scenario.return_to_sender(player_ticket);
         test_scenario::return_shared(house_data);
 
         // Check that the game is in funds sumbitted state.
@@ -118,16 +121,16 @@ module coin_flip::test_game {
         scenario.next_tx(PLAYER);
         {
             let mut house_data = scenario.take_shared<HouseData>();
-            let mut player_counter = scenario.take_from_sender<Ticket>();
+            let mut player_ticket = scenario.take_from_sender<Ticket>();
             let ctx = scenario.ctx();
             game::start_guess(
                 &mut house_data,
-                &mut player_counter,
+                &mut player_ticket,
                 game_id,
                 house_wins,
                 ctx
             );
-            scenario.return_to_sender(player_counter);
+            scenario.return_to_sender(player_ticket);
             test_scenario::return_shared(house_data);
         };
 
@@ -282,11 +285,13 @@ module coin_flip::test_game {
         // Start a game.
         scenario.next_tx(PLAYER);
         let mut player_coin = scenario.take_from_sender<Coin<SUI>>();
+        let player_ticket = scenario.take_from_sender<Ticket>();
         let mut house_data = scenario.take_shared<HouseData>();
         let ctx = scenario.ctx();
         let player_stake_coin = player_coin.split(MIN_STAKE_BALANCE, ctx);
         let game_id = game::start_game(
             &mut house_data,
+            &player_ticket,
             player_stake_coin,
             ctx
         );
@@ -295,6 +300,7 @@ module coin_flip::test_game {
         // debug::print(&b"House balance: ".to_string());
         // debug::print(&house_data.balance());
         scenario.return_to_sender(player_coin);
+        scenario.return_to_sender(player_ticket);
         test_scenario::return_shared(house_data);
 
         // Check that the game is in funds sumbitted state.
@@ -313,16 +319,16 @@ module coin_flip::test_game {
         scenario.next_tx(PLAYER);
         {
             let mut house_data = scenario.take_shared<HouseData>();
-            let mut player_counter = scenario.take_from_sender<Ticket>();
+            let mut player_ticket = scenario.take_from_sender<Ticket>();
             let ctx = scenario.ctx();
             game::start_guess(
                 &mut house_data,
-                &mut player_counter,
+                &mut player_ticket,
                 game_id,
                 house_wins,
                 ctx
             );
-            scenario.return_to_sender(player_counter);
+            scenario.return_to_sender(player_ticket);
             test_scenario::return_shared(house_data);
         };
 

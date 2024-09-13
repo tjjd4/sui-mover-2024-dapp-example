@@ -25,10 +25,11 @@ module coin_flip::game {
     const EInvalidBlsSig: u64 = 2;
     const EInsufficientHouseBalance: u64 = 3;
     const ECallerNotGamePlayer: u64 = 4;
-    const EGameDoesNotExist: u64 = 5;
-    const EGameInvalidState: u64 = 6;
-    const EGameNotInGuessSubmittedState: u64 = 7;
-    const EGameCanNotCancelYet: u64 = 8;
+    const ETicketNotCorrect: u64 = 5;
+    const EGameDoesNotExist: u64 = 6;
+    const EGameInvalidState: u64 = 7;
+    const EGameNotInGuessSubmittedState: u64 = 8;
+    const EGameCanNotCancelYet: u64 = 9;
 
     public struct Game has key, store {
         id: UID,
@@ -57,8 +58,8 @@ module coin_flip::game {
         status: u8
     }
 
-    public fun start_game(house_data: &mut HouseData, coin: Coin<SUI>, ctx: &mut TxContext): ID {
-        let (id, new_game) = create_game(house_data, coin, ctx);
+    public fun start_game(house_data: &mut HouseData, ticket: & Ticket, coin: Coin<SUI>, ctx: &mut TxContext): ID {
+        let (id, new_game) = create_game(house_data, ticket, coin, ctx);
 
         dynamic_object_field::add(house_data.borrow_mut(), id, new_game);
         id
@@ -67,6 +68,9 @@ module coin_flip::game {
     public fun start_guess(house_data: &mut HouseData, ticket: &mut Ticket, game_id: ID, guess: bool, ctx: &mut TxContext) {
         // Get a mutable reference to the game object.
         let game_mut_ref = borrow_mut( house_data, game_id);
+
+        // Ensure ticket is the one that start the game.
+        assert!(game_mut_ref.player() == ticket.player(), ETicketNotCorrect);
 
         // Ensure caller is the one that created the game.
         assert!(ctx.sender() == game_mut_ref.player, ECallerNotGamePlayer);
@@ -252,9 +256,11 @@ module coin_flip::game {
     // --------------- Internal Helper Functions ---------------
 
     /// To create a new game.
-    fun create_game(house_data: &mut HouseData, coin: Coin<SUI>, ctx: &mut TxContext): (ID, Game) {
+    fun create_game(house_data: &mut HouseData, ticket: & Ticket, coin: Coin<SUI>, ctx: &mut TxContext): (ID, Game) {
         let base_fee_in_bp = house_data.base_fee_in_bp();
         let player_stake = coin.value();
+        // Ensure ticket is the one that sender owned.
+        assert!(ctx.sender() == ticket.player(), ETicketNotCorrect);
         // Ensure that the stake is not lower than the min stake.
         assert!(player_stake >= house_data.min_stake(), EStakeTooLow);
         // Ensure that the stake is not higher than the max stake.

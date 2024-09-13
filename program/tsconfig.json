@@ -1,0 +1,41 @@
+{
+    "compilerOptions": {
+        "target": "ES2020",
+        "lib": [
+            "ES2020",
+            "ESNext",
+            "DOM"
+        ],
+        "module": "CommonJS",
+        "moduleResolution": "node",
+        "baseUrl": ".",
+        "rootDir": ".",
+        "outDir": "dist",
+        "downlevelIteration": true,
+        "strict": true,
+        "sourceMap": true,
+        "declaration": true,
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "skipLibCheck": true,
+        "preserveSymlinks": true,
+        "forceConsistentCasingInFileNames": true,
+        "allowJs": true,
+        "noEmit": false,
+        "emitDeclarationOnly": true,
+        "incremental": true,
+        "typeRoots": [
+            "./node_modules/@types"
+        ]
+    },
+    "ts-node": {
+        "require": [
+            "tsconfig-paths/register"
+        ]
+    },
+    "exclude": [
+        "node_modules",
+        "dist",
+    ]
+}

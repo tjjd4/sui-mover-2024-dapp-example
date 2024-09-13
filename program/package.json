@@ -1,0 +1,24 @@
+{
+  "name": "coin-flip-program",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "ts-node scripts/build.ts",
+    "publish": "ts-node scripts/publish.ts",
+    "upgrade": "ts-node scripts/upgrade.ts",
+    "house-init": "ts-node scripts/house-init.ts"
+  },
+  "dependencies": {
+    "@iarna/toml": "^2.2.5",
+    "@mysten/sui": "1.7.0",
+    "@noble/curves": "^1.6.0",
+    "tmp": "^0.2.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.4",
+    "@types/tmp": "^0.2.6",
+    "dotenv": "^16.4.5",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.6.2"
+  }
+}

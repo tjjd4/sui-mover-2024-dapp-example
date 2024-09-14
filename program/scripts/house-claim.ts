@@ -3,12 +3,13 @@ import path from "node:path";
 import { Transaction } from "@mysten/sui/transactions";
 import { Client } from './libs/client';
 import { readJsonForNetwork, color } from './libs/utils';
+import type { Network } from './libs/types';
 
 dotenv.config();
 
 (async () => {
   const client = new Client({
-    network: 'devnet',
+    network: process.env.NETWORK as Network,
     secretKey: process.env.SECRETKE,
   });
 

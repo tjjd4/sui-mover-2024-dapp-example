@@ -3,7 +3,7 @@ import path from "node:path";
 import { Client } from './libs/client';
 import { Publisher } from './libs/publisher';
 import { color } from './libs/utils';
-import type { PublishPackageResult } from './libs/types';
+import type { PublishPackageResult, Network } from './libs/types';
 
 dotenv.config();
 
@@ -15,7 +15,7 @@ const coinFlipResultPaser = (publishPackageResult: PublishPackageResult) => {
 
 (async () => {
   const client = new Client({
-    network: 'devnet',
+    network: process.env.NETWORK as Network,
     secretKey: process.env.SECRETKE,
   });
 
@@ -24,7 +24,7 @@ const coinFlipResultPaser = (publishPackageResult: PublishPackageResult) => {
 
   // === Single Package Publish ===
   const packagePath = path.join(__dirname, '../coin_flip');
-  const publisher = new Publisher('sui-devnet', client);
+  const publisher = new Publisher('sui', client);
   const publishResult = await publisher.publish(packagePath, { enforce: true, resultParser: coinFlipResultPaser});
   console.info('Publish Result:', publishResult);
 

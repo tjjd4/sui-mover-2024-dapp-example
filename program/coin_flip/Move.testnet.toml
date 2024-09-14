@@ -2,6 +2,7 @@
 name = "coin_flip"
 version = "0.0.1"
 edition = "2024.beta"
+published-at = "0x887f2167e17a8cdf96804f1823faea58bd6ecc2dee6539a38a529e8b29bc54eb"
 
 [dependencies.Sui]
 git = "https://github.com/MystenLabs/sui.git"
@@ -9,4 +10,4 @@ subdir = "crates/sui-framework/packages/sui-framework"
 rev = "testnet"
 
 [addresses]
-coin_flip = "0x0"
+coin_flip = "0x887f2167e17a8cdf96804f1823faea58bd6ecc2dee6539a38a529e8b29bc54eb"

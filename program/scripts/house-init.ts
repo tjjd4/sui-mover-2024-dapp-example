@@ -8,6 +8,7 @@ import * as curveUtils from "@noble/curves/abstract/utils";
 import { Client } from './libs/client';
 import { readJsonForNetwork, writeJsonForNetwork, color } from './libs/utils';
 import type { SuiTransactionBlockResponse } from "@mysten/sui/client";
+import type { Network } from './libs/types';
 
 dotenv.config();
 
@@ -26,7 +27,7 @@ const paseTxbResponse = (response: SuiTransactionBlockResponse) => {
 
 (async () => {
   const client = new Client({
-    network: 'devnet',
+    network: process.env.NETWORK as Network,
     secretKey: process.env.SECRETKE,
   });
 
@@ -38,7 +39,7 @@ const paseTxbResponse = (response: SuiTransactionBlockResponse) => {
   const resultData = readJsonForNetwork(packagePath, client.network);
   const packageId = resultData.packageId;
   const houseCapId = resultData.houseCapId;
-  const houseStakeSui = 5;
+  const houseStakeSui = 1;
 
   const txb = new Transaction();
   const [houseStakeCoin] = txb.splitCoins(txb.gas, [

@@ -1,6 +1,10 @@
 # sui-mover-2024
 Course about Sui development
 
+## Coin flip Game Logic
+
+![User Flow](img/user-flow.png)
+
 Accounts:
 - **Player**: Represents the user participating in the game.
 - **House**: Represents the project owner and has control over the house operations.
